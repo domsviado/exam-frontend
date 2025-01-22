@@ -33,6 +33,9 @@ export const useAuthStore = defineStore({
         tokenExpiration: userDetails.tokenExpiration,
       };
     },
+    async load() {
+      // TODO reload token
+    },
   },
   getters: {
     userDetails: (state) => state.auth.userDetails,

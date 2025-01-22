@@ -10,72 +10,31 @@ export default defineNuxtPlugin((nuxtApp) => {
   Object.keys(AllRules).forEach((rule) => {
     VeeValidate.defineRule(rule, AllRules[rule]);
   });
-  VeeValidate.defineRule("phone_number", (value: string) => {
-    if (!/^(09|\+639)\d{9}$/.test(value)) {
-      return "This field must be a valid phone_number";
+
+  VeeValidate.defineRule("validName", (value: string) => {
+    if (/^[\p{L}\s.\-ñÑ]+$/u.test(value)) {
+      return true; // Validation passed
     }
-    return true;
+    return "Invalid characters.";
   });
 
-  VeeValidate.defineRule("has_number", (value: string) => {
-    if (!/\d/.test(value)) {
-      return "Must contain at least one number";
-    }
-    return true;
-  });
-  VeeValidate.defineRule("has_special_char", (value: string) => {
-    if (!/[!@#$%^&*]/.test(value)) {
-      return "Must contain at least one special character";
-    }
-    return true;
-  });
-  VeeValidate.defineRule("has_upper_lower_case", (value: string) => {
-    if (!/^(?=.*[a-z])(?=.*[A-Z])/.test(value)) {
-      return "Must contain both uppercase and lowercase characters";
-    }
-    return true;
-  });
-  VeeValidate.defineRule("no_spaces", (value: string) => {
-    if (/\s/g.test(value)) {
-      return "This field cannot contain any spaces.";
-    }
-    return true;
-  });
+  VeeValidate.defineRule("validAge", (value: string | Date) => {
+    const today = new Date();
+    const minDate = new Date();
+    const maxDate = new Date();
 
-  VeeValidate.defineRule("ph_phone_number", (value: string) => {
-    if (!/^\+639\d{9}$/g.test(value)) {
-      return "Invalid mobile number format";
-    }
-    return true;
-  });
+    minDate.setFullYear(today.getFullYear() - 120);
+    maxDate.setFullYear(today.getFullYear() - 1);
 
-  VeeValidate.defineRule("select_required", (value: string) => {
-    if ($_.isArray(value)) {
-      return !value.length ? false : true;
-    }
-    if (!value) {
-      return false;
-    }
-    return true;
-  });
+    const inputDate = new Date(value);
 
-  VeeValidate.defineRule(
-    "confirm_password",
-    (value: string, [otherValue]: Array<string>) => {
-      if (value !== otherValue) {
-        return "Passwords do not match";
-      }
-      return true;
+    if (isNaN(inputDate.getTime())) {
+      return "Invalid date";
     }
-  );
-
-  VeeValidate.defineRule("strong_password", (value: string) => {
-    const pattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    if (!pattern.test(value)) {
-      return "Password not strong enough";
-    }
-    if (value == null) {
-      return true;
+    if (inputDate < minDate || inputDate > maxDate) {
+      return `Birthdate must be between ${
+        minDate.toISOString().split("T")[0]
+      } and ${maxDate.toISOString().split("T")[0]}`;
     }
     return true;
   });

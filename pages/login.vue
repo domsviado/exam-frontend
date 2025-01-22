@@ -87,6 +87,8 @@ const onSubmit = async () => {
   }
 };
 
-const onReset = () => {};
+const onReset = () => {
+  password.value = null;
+};
 </script>
 <style scoped></style>
