@@ -117,11 +117,11 @@ const pagination = ref({
 });
 
 onMounted(() => {
-  fetchCustomers(pagination.value);
+  fetchCustomers(pagination.value.page);
 });
 
 const isLoading = ref(false);
-const dialogVisible = ref(true);
+const dialogVisible = ref(false);
 
 const rows = ref([]);
 
