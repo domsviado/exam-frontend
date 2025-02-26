@@ -7,8 +7,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("VErrorMessage", VeeValidate.ErrorMessage);
   const { $_ } = useNuxtApp();
   const rules: string[] = $_.keys(AllRules);
-  Object.keys(AllRules).forEach((rule) => {
-    VeeValidate.defineRule(rule, AllRules[rule]);
+  $_.forEach(rules, (rule: string) => {
+    VeeValidate.defineRule(rule, (AllRules as Record<string, any>)[rule]);
   });
 
   VeeValidate.defineRule("validName", (value: string) => {

@@ -17,8 +17,10 @@
     </template>
   </q-input>
 </template>
+
 <script setup lang="ts">
 import { useField } from "vee-validate";
+
 const props = defineProps({
   label: {
     type: String,
@@ -100,10 +102,13 @@ const { errorMessage, meta, errors, value, handleChange } = useField(
     label: props.label ? props.label : props.name,
   }
 );
+
+// Watch value change
 watch(value, (val) => {
   emit("update:modelValue", val);
 });
 
+// Watch meta (dirty state)
 watch(
   meta,
   (meta) => {
@@ -112,8 +117,3 @@ watch(
   { deep: true }
 );
 </script>
-<style lang="postcss" scoped>
-input:-webkit-autofill {
-  -webkit-background-clip: text;
-}
-</style>

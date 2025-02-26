@@ -7,7 +7,9 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "get-version": "git describe --tags --abbrev=0 > .version",
+    "update-version": "node update-version.js"
   },
   "dependencies": {
     "@nuxt/postcss8": "^1.1.3",

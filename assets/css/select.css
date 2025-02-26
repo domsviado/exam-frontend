@@ -1,0 +1,31 @@
+.multiselect > .multiselect__tags {
+  @layer border-b-gray-200;
+  /* min-height: 0px; */
+  padding: 6px 40px 0 8px;
+
+  border-right: none;
+  border-left: none;
+  border-top: none;
+  border-radius: 0px;
+  font-size: 14px;
+}
+
+.has-error > .multiselect__tags {
+  border-color: red !important;
+  /* box-shadow: 0px 0px 8px 0px #d1e3cb; */
+}
+.multiselect__tags {
+  @apply h-auto min-h-[34px] !important;
+}
+/* .multiselect__content-wrapper {
+  z-index:auto !important;
+}
+.multiselect__content {
+  z-index:auto !important;
+} */
+.multiselect--active {
+  z-index: 40 !important;
+}
+.multiselect__content-wrapper {
+  z-index: 40 !important;
+}

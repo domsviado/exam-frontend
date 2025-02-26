@@ -24,6 +24,12 @@ export default defineNuxtConfig({
     },
     plugins: ["Notify", "Loading"],
   },
+  css: [
+    "@/assets/css/main.css",
+    "@/assets/css/table.css",
+    "@/assets/css/select.css",
+    "@/assets/css/vue3-toastify.css",
+  ],
   postcss: {
     plugins: {
       "postcss-import": {},
@@ -42,6 +48,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       api_base_url: process.env.API_URL,
+      app_version: process.env.APP_VERSION || "v0.0.0",
+      environment: process.env.ENVIRONMENT || "develop",
     },
   },
 });

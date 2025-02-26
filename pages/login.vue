@@ -6,14 +6,14 @@
     </q-card-section>
 
     <q-card-section>
-      <VForm @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+      <VForm @submit="onSubmit" class="q-gutter-md">
         <Alert :type="alertType" v-if="hasError" :title="alertMessage" />
         <InputField
           inputType="text"
           name="email"
           placeholder="Email address"
-          :rules="{ email: true }"
-          v-model="email"
+          :rules="{ email: true, required: true }"
+          v-model="username"
           autofocus
         />
         <InputField
@@ -21,7 +21,8 @@
           name="password"
           placeholder="Password"
           v-model="password"
-          :type="isPassword ? 'password' : 'text'"
+          :inputType="isPassword ? 'password' : 'text'"
+          :rules="{ required: true }"
           label="Password"
         >
           <template v-slot:append>
@@ -51,15 +52,12 @@
   </q-card>
 </template>
 <script setup lang="ts">
-import { useAuthStore } from "~/store/auth";
-
 definePageMeta({
   layout: "unauthenticated-layout",
 });
 
-const { $api, $router } = useNuxtApp();
-const authStore = useAuthStore();
-const email = ref(null);
+const { $router } = useNuxtApp();
+const username = ref(null);
 const password = ref(null);
 const isPassword = ref(true);
 const isLoading = ref(false);
@@ -71,14 +69,12 @@ const alertMessage = ref("");
 const onSubmit = async () => {
   try {
     isLoading.value = true;
-    const { data, error } = await $api.auth.login({ email, password });
-    if (data.value?.data) {
-      authStore.authenticateUser(data.value?.data);
+    const response = await loginApi({ email: username, password });
+    if (response.success) {
       $router.push("/customers");
-    }
-    if (error.value?.data) {
+    } else {
       hasError.value = true;
-      alertMessage.value = error.value.data.error;
+      alertMessage.value = response.message;
     }
   } catch (err) {
     console.error(err.message);
@@ -86,9 +82,8 @@ const onSubmit = async () => {
     isLoading.value = false;
   }
 };
-
 const onReset = () => {
-  password.value = null;
+  password.value = "";
 };
 </script>
 <style scoped></style>
